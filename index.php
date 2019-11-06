@@ -1,5 +1,140 @@
 <?php require "header.php"; ?>
 
+	<script type="text/javascript">
+		$(document).ready(function()
+		{
+			$('#editStudentdiv').hide();
+    		getStudentList();
+
+
+function getStudentList()
+{
+	$.get('studentlist.json', function(response)
+	{
+		if (response) 
+		{
+			var studnetObjArray = JSON.parse(response);
+
+
+			var html = '';
+			var j=1;
+
+			$.each(studnetObjArray, function(i, v)
+			{
+				html += `<tr>
+							<td>${j++}</td>
+							<td>${v.name}</td>
+							<td>${v.gender}</td>
+							<td>${v.email}</td>
+							<td>
+								<button class="btn btn-success detail" data-id="${i}"> Detail </button>
+								<button class="btn btn-warning edit" data-id="${i}"> Edit </button>
+								<button class="btn btn-danger delete" data-id="${i}"> Dele  te </button>
+							</td>
+						</tr>`;
+			});
+
+			$('tbody').html(html);
+
+		}
+	})
+}
+
+$('tbody').on('click','.detail', function(){
+
+	var id = $(this).data('id');
+
+	$.get('studentlist.json', function(response)
+	{
+		if (response) 
+		{
+			console.log(typeof(response));
+
+			//string
+			var studnetObjArray = JSON.parse(response);
+
+			// object
+			// var studnetObjArray = response;
+
+			var name = studnetObjArray[id].name;
+			var email = studnetObjArray[id].email;
+			var address = studnetObjArray[id].address;
+			var profile = studnetObjArray[id].profile;
+			var gender = studnetObjArray[id].gender;
+
+			$('#detail_name').text(name);
+			$('#detail_email').text(email);
+			$('#detail_address').text(address);
+			$('#detail_gender').text(gender);
+			$('#detail_photo').attr('src',profile);
+
+			$('#detailModal').modal('show');
+
+
+		}
+	})
+
+
+
+});
+
+$('tbody').on('click','.edit', function(){
+
+	var id = $(this).data('id');
+
+	$.get('studentlist.json', function(response)
+	{
+		if (response) 
+		{
+			console.log(typeof(response));
+
+			//string
+			var studnetObjArray = JSON.parse(response);
+
+			// object
+			// var studnetObjArray = response;
+
+			var name = studnetObjArray[id].name;
+			var email = studnetObjArray[id].email;
+			var address = studnetObjArray[id].address;
+			var profile = studnetObjArray[id].profile;
+			var gender = studnetObjArray[id].gender;
+
+			$('#edit_id').val(id);
+
+			$('#edit_name').val(name);
+			$('#edit_email').val(email);
+			$('#edit_address').val(address);
+			$('#edit_oldprofile').val(profile);
+
+			$('#showOldPhoto').attr('src',profile);
+
+			if (gender == "Male") 
+			{
+				$('#edit_male').attr('checked', 'checked');
+			}
+			else
+			{
+				$('#edit_female').attr('checked', 'checked');
+			}
+
+
+			$('#addStudentdiv').hide();
+			$('#editStudentdiv').show();
+
+
+
+		}
+	})
+
+
+
+});
+
+
+		});
+	</script>
+
 	
 	<div class="container" id="addStudentdiv">
 		
@@ -79,7 +214,6 @@
 	</div>
 
 	<div class="container" id="editStudentdiv">
-		
 		<div class="row mt-5">
 			<div class="col-12 text-center">
 				<h1 class="display-4"> Edit Existing Student </h1>
@@ -89,8 +223,8 @@
 		<div class="row mt-5">
 			<div class="col align-self-center">
 				<form action="updatestudent.php" method="POST" enctype="multipart/form-data">
-					<input type="hidden" name="edit_id" id="edit_id">
-					<input type="hidden" name="edit_oldprofile" id="edit_oldphoto">
+					<input type="text" name="edit_id" id="edit_id">
+					<input type="text" name="edit_oldprofile" id="edit_oldprofile">
 					<div class="form-group row">
 						<label for="profile" class="col-sm-2 col-form-label"> Profile </label>
 					    <div class="col-sm-10">
@@ -191,9 +325,10 @@
 		<tbody></tbody>
 	</table>
 
+
 <!-- Detail Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
+<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
@@ -202,7 +337,19 @@
         </button>
       </div>
       <div class="modal-body">
-        ...
+        <div class="container">
+        	<div class="row">
+        		<div class="col-4">
+        			<img src='' id="detail_photo" class="img-fluid">
+        		</div>
+        		<div class="col=8">
+        			<h1 id="detail_name"></h1>
+        			<p id="detail_gender"></p>
+        			<p id="detail_email"></p>
+        			<p id="detail_address"></p>
+        		</div>
+        	</div>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
