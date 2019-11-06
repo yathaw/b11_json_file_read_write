@@ -12,19 +12,5 @@
         "gender": "Male",
         "address": "Yangon",
         "profile": "photo\/emoji_one.png"
-    },
-    {
-        "name": "Testing One",
-        "email": "testingone@gmail.com",
-        "gender": "Female",
-        "address": "Mandalay",
-        "profile": "photo\/emoji_four.png"
-    },
-    {
-        "name": "Testing Four",
-        "email": "testingfour@gmail.com",
-        "gender": "Male",
-        "address": "Nay Pyi Taw",
-        "profile": "photo\/emoji_four.png"
     }
 ]

@@ -131,6 +131,23 @@ $('tbody').on('click','.edit', function(){
 
 });
 
+$('tbody').on('click','.delete', function(){
+	var id=$(this).data('id');
+	var ans=confirm('Are you sure?');
+	if (ans) 
+	{
+		$.post(
+				'deletestudent.php', {id:id},
+				function(data)
+				{
+					console.log(data);
+					getStudentList();
+				}
+			)
+	}
+	   	
+});
+
 
 		});
 	</script>
